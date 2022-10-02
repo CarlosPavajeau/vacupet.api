@@ -1,9 +1,13 @@
 package com.tic.vacupet.api.pets;
 
+import com.tic.vacupet.pets.application.PetResponse;
 import com.tic.vacupet.pets.application.create.CreatePetCommand;
+import com.tic.vacupet.pets.application.search_all.SearchAllPetsQuery;
 import io.jkratz.mediator.core.Mediator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pets")
@@ -21,5 +25,13 @@ public class PetController {
         mediator.dispatch(command);
 
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PetResponse>> getAll() {
+        var query = new SearchAllPetsQuery();
+        var pets = mediator.dispatch(query);
+
+        return ResponseEntity.ok(pets);
     }
 }
