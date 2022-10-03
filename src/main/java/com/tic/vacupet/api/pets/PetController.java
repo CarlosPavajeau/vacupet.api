@@ -1,6 +1,7 @@
 package com.tic.vacupet.api.pets;
 
 import com.tic.vacupet.pets.application.PetResponse;
+import com.tic.vacupet.pets.application.add_vaccine.AddPetVaccineCommand;
 import com.tic.vacupet.pets.application.create.CreatePetCommand;
 import com.tic.vacupet.pets.application.search_all.SearchAllPetsQuery;
 import io.jkratz.mediator.core.Mediator;
@@ -33,5 +34,16 @@ public class PetController {
         var pets = mediator.dispatch(query);
 
         return ResponseEntity.ok(pets);
+    }
+
+    @PutMapping
+    public ResponseEntity<Boolean> addVaccine(@RequestBody AddPetVaccineCommand command) {
+        try {
+            mediator.dispatch(command);
+
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

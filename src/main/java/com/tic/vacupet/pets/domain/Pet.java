@@ -1,12 +1,14 @@
 package com.tic.vacupet.pets.domain;
 
 import com.tic.vacupet.pets.owner.domain.Owner;
+import com.tic.vacupet.vaccines.domain.Vaccine;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "pets")
@@ -41,4 +43,9 @@ public class Pet {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "owner_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_pet_owner"))
     private Owner owner;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "pet_vaccine", joinColumns = @JoinColumn(name = "pet_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_pet_vaccine_pet")), inverseJoinColumns = @JoinColumn(name = "vaccine_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_pet_vaccine_vaccine")))
+    @ToString.Exclude
+    private List<Vaccine> vaccines;
 }
